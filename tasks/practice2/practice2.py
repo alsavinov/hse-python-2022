@@ -1,5 +1,6 @@
 from typing import Iterable
-
+import random
+from unittest import result
 UNCULTURED_WORDS = ('kotleta', 'pirog')
 
 
@@ -13,6 +14,7 @@ def greet_user(name: str) -> str:
     """
 
     # пиши код здесь
+    greeting = f'Привет, {name}!'
     return greeting
 
 
@@ -27,8 +29,10 @@ def get_amount() -> float:
 
     :return: случайную сумму на счете
     """
+    
 
     # пиши код здесь
+    amount = round(random.uniform(100, 1000000), 2)
     return amount
 
 
@@ -43,7 +47,17 @@ def is_phone_correct(phone_number: str) -> bool:
     """
 
     # пиши код здесь
-    return result
+    if len(phone_number) != 12:
+        return False
+    if phone_number[0] != '+':
+        return False
+    if phone_number[1] != '7':
+        return False
+    s = phone_number[2::]
+    for a in s:
+        if a < '0' or a > '9':
+            return False
+    return True
 
 
 def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
@@ -59,7 +73,10 @@ def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
     """
 
     # пиши код здесь
-    return result
+    if current_amount >= float(transfer_amount):
+        return True
+    else:
+        return False
 
 
 def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
@@ -78,6 +95,18 @@ def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
     """
 
     # пиши код здесь
+    text = text.strip()
+    text = text.capitalize()
+    while '  ' in text:
+        text = text.replace('  ', ' ')
+    while '"' in text:
+        text = text.replace('"', '')
+    while '\'' in text:
+        text = text.replace('\'', '')
+    for x in uncultured_words:
+        while x in text:
+            text = text.replace(x, "#" * len(x))
+    result = text[:]
     return result
 
 
@@ -101,4 +130,13 @@ def create_request_for_loan(user_info: str) -> str:
     """
 
     # пиши код здесь
+    user_info = user_info.split(',')
+    result = 'Фамилия: ' + user_info[0] + '\n' + 'Имя: ' + user_info[1] + '\n' + 'Отчество: ' + user_info[2] + '\n' + 'Дата рождения: ' + user_info[3] + '\n' + 'Запрошенная сумма: ' + user_info[4]
     return result
+
+
+
+print(moderate_text('Per restaurant pirog!', UNCULTURED_WORDS))
+print(moderate_text('Per restaurant pirog and kotleta!', UNCULTURED_WORDS))
+print(moderate_text('Per restaurant kotleta!', UNCULTURED_WORDS))
+print(moderate_text('  per restaurant  ', UNCULTURED_WORDS))

@@ -1,3 +1,4 @@
+from ast import Not
 from typing import Any, Optional
 
 
@@ -39,5 +40,28 @@ def search_phone(content: Any, name: str) -> Optional[str]:
     """
 
     # пиши свой код здесь
+   
+    if isinstance(content, dict):
+        if name in content.values():
+            return content['phone']
 
+    if isinstance(content, dict):
+        for x, y in content.items(): 
+            if search_phone(y, name) == None:
+                continue
+            else:
+                return search_phone(y, name)
+
+    if isinstance(content, list):
+        for x in content:
+            if search_phone(x, name) == None:
+                continue
+            else:
+                return search_phone(x, name)
+    
     return None
+
+content = {'students': [{'name': 'Petr', 'phone': '+78001001005'}, {'name': 'Ivan', 'phone': '+78005553535'}], 'university': 'HSE'}
+content1 = {'student': {'name': 'Ivan', 'phone': '+78005553535'}, 'university': 'HSE'}
+content2 = {'groups': [{'group_name': '20pmi-1', 'students': [{'name': 'Serg', 'phone': '+78001001005'}, {'name': 'Ivan', 'phone': '+78005553535'}]}], 'university': 'HSE'}
+print(search_phone(content, 'Ivan'))

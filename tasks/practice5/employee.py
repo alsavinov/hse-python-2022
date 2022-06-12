@@ -1,6 +1,7 @@
+from turtle import position
 from typing import Dict
 
-from .exception import NoSuchPositionError
+from .exception import EmployeeError, NoSuchPositionError
 
 POSITIONS: Dict[str, int] = {
     'CEO': 0,
@@ -33,12 +34,25 @@ class Employee:
     position: str
     _salary: int
 
+
+
+
     def __init__(self, name: str, position: str, salary: int):
         """
         Задача: реализовать конструктор класса, чтобы все тесты проходили
         """
-
+        
         # пиши свой код здесь
+        
+        if isinstance(salary, int):
+            self._salary = salary
+            self.name = name
+            self.position = position
+        else:
+            raise ValueError
+
+        
+        
 
     def get_salary(self) -> int:
         """
@@ -46,6 +60,10 @@ class Employee:
         """
 
         # пиши свой код здесь
+        return self._salary
+
+
+
 
     def __eq__(self, other: object) -> bool:
         """
@@ -56,6 +74,16 @@ class Employee:
         """
 
         # пиши свой код здесь
+        if isinstance(self, Employee) and isinstance(other, Employee):
+            if self.position in POSITIONS and other.position in POSITIONS:
+                return get_position_level(self.position) == get_position_level(other.position)
+            else:
+                raise ValueError
+        else:
+            raise TypeError
+
+
+
 
     def __str__(self):
         """
@@ -64,9 +92,14 @@ class Employee:
         """
 
         # пиши свой код здесь
+        return f'name: {self.name} position: {self.position}'
+
+
 
     def __hash__(self):
         return id(self)
+
+
 
 
 class Developer(Employee):
@@ -81,8 +114,11 @@ class Developer(Employee):
         """
         Задача: реализовать конструктор класса, используя конструктор родителя
         """
-
+        
         # пиши свой код здесь
+        super().__init__(name, position, salary)
+        self.language = language
+        self.position = 'developer'
 
 
 class Manager(Employee):
@@ -98,3 +134,5 @@ class Manager(Employee):
         """
 
         # пиши свой код здесь
+        super().__init__(name, position, salary)
+        self.position = 'manager'
